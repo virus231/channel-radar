@@ -2,9 +2,10 @@
 
 ## Current stage
 
-The first implementation ticket adds the FastAPI/React foundation, channels read
-API, migration, Docker and CI. Render Free with Neon Free is live and verified. Collection,
-analytics and digests belong to the remaining tickets; the MVP is not complete.
+The first two implementation tickets add the FastAPI/React foundation and channel
+addition with first-page collection, persistence and UI polling. Render Free with
+Neon Free is live. Scheduled/incremental collection, analytics and digests belong
+to the remaining tickets; the MVP is not complete.
 
 Read `docs/spec.md` before implementation and `docs/development-plan.md` before
 choosing a ticket. User instructions take precedence over skills; an approved plan
@@ -12,10 +13,10 @@ settles its choices without another setup interview.
 
 ## Module boundaries
 
-- Future `backend/app/telegram.py`: Telegram preview HTTP access and HTML parsing.
+- `backend/app/telegram.py`: Telegram preview HTTP access and HTML parsing.
   Parsing accepts HTML and produces normalized data; it does not write to storage.
-- Future `backend/app/collection.py`: incremental collection, persistence and source
-  health. The first collection and scheduled collection use the same operation.
+- `backend/app/collection.py`: first-page collection, persistence and source health.
+  Scheduled/incremental collection will extend the same operation in ticket 03.
 - Future `backend/app/analytics.py`: queries and arithmetic over stored observations.
   It never fetches Telegram or calls the LLM.
 - Future `backend/app/digests.py`: bounded input selection, Gemini calls and digest

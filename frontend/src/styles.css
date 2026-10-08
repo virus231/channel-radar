@@ -58,3 +58,37 @@ footer { padding: 23px 0; border-top: 1px solid #dde5df; font-size: 11px; color:
   .state h3 { font-size: 18px; }
   footer { font-size: 10px; }
 }
+.add-channel { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 28px; }
+.add-channel > div { flex: 1; }
+.add-channel label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.add-channel input { width: 100%; padding: 12px 14px; border: 1px solid #cedbd2; border-radius: 7px; font: inherit; font-size: 15px; background: #fff; color: inherit; }
+.add-channel input:focus-visible { outline: 2px solid #23846d; outline-offset: 2px; }
+.add-channel p, .collection-info p { font-size: 12px; color: #687b73; line-height: 1.6; margin: 8px 0 0; }
+.add-channel button { margin-top: 25px; min-height: 45px; }
+button:disabled { cursor: wait; opacity: .6; }
+.form-error { color: #9c342d; font-size: 14px; margin: -10px 0 24px; }
+.channel-list li { padding: 0; }
+.channel-select { width: 100%; margin: 0; border-radius: 0; display: flex; align-items: center; gap: 15px; padding: 22px 28px; background: transparent; color: inherit; text-align: left; }
+.channel-select:hover, .channel-select[aria-pressed=true] { background: #f3f8f4; }
+.channel-select:focus-visible { outline-offset: -4px; }
+.channel-copy { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.channel-copy strong { font-size: 15px; overflow-wrap: anywhere; }
+.channel-copy > span { font-size: 12px; color: #687b73; overflow-wrap: anywhere; }
+.status-badge { font-size: 11px; background: #edf3ef; color: #496857; padding: 6px 9px; border-radius: 20px; }
+.status-badge.error, .status-badge.unavailable { color: #933c32; background: #faf0ed; }
+.posts-panel { margin-top: 28px; }
+.collection-info { padding: 12px 28px 18px; border-bottom: 1px solid #edf1ee; }
+.post { padding: 28px; border-bottom: 1px solid #edf1ee; }
+.post:last-child { border-bottom: 0; }
+.post-heading { display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: #74847c; }
+.post-text { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 15px; line-height: 1.75; }
+.post-metrics { display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #687b73; line-height: 1.6; overflow-wrap: anywhere; }
+.post-original { display: inline-block; margin-top: 18px; font-size: 12px; color: #20795e; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 600px) {
+  .add-channel { flex-direction: column; gap: 10px; }
+  .add-channel > div, .add-channel button { width: 100%; }
+  .add-channel button { margin-top: 0; }
+  .channel-select { padding: 20px; flex-wrap: wrap; }
+  .status-badge { margin-left: 57px; }
+  .collection-info, .post { padding: 20px; }
+}
