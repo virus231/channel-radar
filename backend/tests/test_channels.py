@@ -31,6 +31,8 @@ def test_channel_list_reads_saved_channels(application, database):
 
     response = asyncio.run(request())
     assert response.status_code == 200
-    assert response.json() == [
-        {"id": 1, "username": "example_channel", "title": "Приклад"}
-    ]
+    channel = response.json()[0]
+    assert (channel["id"], channel["username"], channel["title"]) == (1, "example_channel", "Приклад")
+    assert channel["status"] == "pending"
+    assert channel["subscribers"] is None
+    assert channel["post_count"] == 0
