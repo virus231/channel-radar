@@ -90,6 +90,13 @@ docker run --rm --env-file .env -p 8000:8000 channel-radar
 У Docker `localhost` означає сам контейнер; задайте адресу БД, доступну контейнеру.
 Startup застосовує Alembic migration і запускає один Uvicorn worker.
 
+Перевірено 2026-10-08: 4 offline backend-тести, 4 frontend-тести, TypeScript/build,
+міграція на окремій PostgreSQL 17, запуск із чистого клону та Vite proxy.
+У браузері перевірено production UI на 1440 px і 390 px без горизонтального
+прокручування. [CI](https://github.com/virus231/channel-radar/actions/runs/37794797772)
+підтвердив також Docker build/start із PostgreSQL. Neon, Render і публічний URL
+ще не перевірені; задача #2 залишається відкритою.
+
 ## Модель даних
 
 Postgres зберігатиме канали, пости, часові спостереження й кеш дайджестів.

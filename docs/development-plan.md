@@ -140,5 +140,7 @@ HTTPS-клонування з README виконана успішно; автор
 
 Після підготовки користувач змінив visibility на PUBLIC. Почато задачу #2:
 FastAPI/React, lockfiles, offline tests, початкова migration, Docker та CI.
-Локальний PostgreSQL і production frontend перевірені; live deployment ще очікує
-налаштування provider access. Задача залишається відкритою до live acceptance.
+Локальний PostgreSQL, production frontend, чистий клон і Docker у
+[CI](https://github.com/virus231/channel-radar/actions/runs/37794797772) перевірені;
+live deployment ще очікує налаштування provider access. Задача залишається
+відкритою до live acceptance.
