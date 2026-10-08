@@ -8,8 +8,8 @@ Gemini-дайджест. **Специфікація:** [spec.md](spec.md), GitHu
 означає завершення підготовки, а не виконання задач нижче. День 1–3 відлічується
 від початку розробки; це не календарний дедлайн, вигаданий із дати документа.
 
-2026-10-08: задача 01 виконана — https://channel-radar-uibp.onrender.com.
-Наступна задача — 02, додавання каналу; решта MVP ще не реалізована.
+2026-10-08: задачі 01–02 виконані — https://channel-radar-uibp.onrender.com.
+Наступна задача — 03, регулярне оновлення й історія; решта MVP ще не реалізована.
 
 ## Порядок роботи
 
@@ -51,13 +51,13 @@ Gemini-дайджест. **Специфікація:** [spec.md](spec.md), GitHu
 
 ### 02. Додавання каналу
 
-- [ ] Зберегти HTML fixtures і написати failing parser tests; реалізувати
+- [x] Зберегти HTML fixtures і написати failing parser tests; реалізувати
   `parse_preview(html, username)` → нормалізовані дані без запису до БД.
-- [ ] Реалізувати першу collection operation й POST/GET channels за контрактом;
+- [x] Реалізувати першу collection operation й POST/GET channels за контрактом;
   перевірити natural keys, null counters і повторний username offline.
-- [ ] Додати форму, pending/error/empty стани й polling з UI tests. Один latest
+- [x] Додати форму, pending/error/empty стани й polling з UI tests. Один latest
   preview забезпечує початкові дані без архівного backfill.
-- [ ] Додати `@durov` через живий UI, виміряти затримку теплого сервісу й
+- [x] Додати `@durov` через живий UI, виміряти затримку теплого сервісу й
   перевірити дані проти PostgreSQL. Комітити завершений вертикальний зріз.
 
 ### 03. Оновлення та історія
