@@ -121,6 +121,12 @@ Cache fingerprint залежить від текстового входу, а н
 ## Безкоштовний деплой і його межі
 
 Один Render Free service віддаватиме API й зібраний React, Neon Free — Postgres.
+[Відкрити Render Blueprint](https://dashboard.render.com/blueprint/new?repo=https%3A%2F%2Fgithub.com%2Fvirus231%2Fchannel-radar)
+— конфігурація одного Docker-сервісу вже в `render.yaml`. Виберіть свій workspace,
+задайте `DATABASE_URL` із Neon (direct connection, SSL) у секретних settings і
+застосуйте Blueprint. Render прочитає `main`, застосує migration і запустить сервіс.
+Фактичний URL додамо після перевірки деплою; це посилання відкриває налаштування.
+
 cron-job.org перевірятиме health без БД кожні 10 хвилин і запускатиме захищений
 фоновий збір кожні 30 хвилин. На дату плану Render засинає після 15 хвилин без
 трафіку, холодний старт може тривати близько хвилини, а зовнішній cron очікує
