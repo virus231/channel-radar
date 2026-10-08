@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: channel-radar
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        sync: false

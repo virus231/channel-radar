@@ -2,9 +2,9 @@
 
 ## Current stage
 
-This repository contains the approved MVP specification, development plan and
-project-local skills. Application implementation and cloud provisioning require
-the next development task; preparation alone does not complete the test assignment.
+The first implementation ticket adds the FastAPI/React foundation, channels read
+API, migration, Docker and CI. Live deployment is pending provider setup. Collection,
+analytics and digests belong to the remaining tickets; the MVP is not complete.
 
 Read `docs/spec.md` before implementation and `docs/development-plan.md` before
 choosing a ticket. User instructions take precedence over skills; an approved plan
@@ -20,9 +20,9 @@ settles its choices without another setup interview.
   It never fetches Telegram or calls the LLM.
 - Future `backend/app/digests.py`: bounded input selection, Gemini calls and digest
   cache. LLM failures remain local to the digest operation.
-- Future `backend/app/models.py` and Alembic migrations own the SQLAlchemy data model;
+- `backend/app/models.py` and Alembic migrations own the SQLAlchemy data model;
   FastAPI routes expose it through response models, not ORM objects.
-- Future `frontend/src/`: React rendering, navigation and API requests. It receives
+- `frontend/src/`: React rendering, navigation and API requests. It receives
   normalized data; collection, analytics arithmetic and provider secrets stay on
   the backend. Vite development proxies `/api`; production uses one origin.
 
@@ -36,8 +36,8 @@ settles its choices without another setup interview.
 - Pytest runs without network or credentials: local HTML fixtures, in-process API
   transport and a temporary SQLite database. Telegram/Gemini requests are mocked.
   Production PostgreSQL and live browser acceptance are separate checks.
-- No runtime dependency files or application code exist yet. Add and lock them in
-  the first implementation ticket; document commands when they actually run.
+- Backend dependencies are locked with uv; frontend dependencies with npm.
+  Run the commands in README and keep lockfiles aligned with manifests.
 - Use `.env.example` as the configuration inventory. Keep real values in ignored
   local environment files or provider settings, never in issues, logs or frontend.
 

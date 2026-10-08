@@ -1,8 +1,9 @@
 # Channel Radar
 
-**Статус: підготовка до розробки. Робочого публічного URL ще немає.**
-Після деплою фактичне посилання на сервіс з’явиться тут. Застосунок, production БД,
-cron jobs і LLM-інтеграція ще не реалізовані; тестове завдання ще не здано.
+**Статус: перша задача розробки — базовий запуск. Публічного URL ще немає.**
+Працюють FastAPI, порожній React-огляд і читання каналів із PostgreSQL.
+Деплой на Render/Neon очікує налаштування доступів. Додавання каналів, збір,
+аналітика, cron jobs і LLM-інтеграція — наступні задачі; MVP ще не завершений.
 
 Живий дашборд аналітики публічних Telegram-каналів: додавання каналу з форми,
 інкрементальний збір, історія метрик, перегляд постів і AI-дайджест за період.
@@ -21,23 +22,80 @@ cron jobs і LLM-інтеграція ще не реалізовані; тест
 
 ## Як відкрити локально
 
-Потрібні Git, `gh` і авторизований акаунт із доступом до приватного репозиторію.
-Команда використовує HTTPS і поточний акаунт `gh`, незалежно від SSH-ключів.
+Репозиторій публічний за рішенням користувача. Для запуску потрібні Git,
+Python 3.12, uv, Node.js 22.12+ і окремий PostgreSQL для розробки.
 
 ```sh
-git -c credential.helper= -c 'credential.helper=!gh auth git-credential' clone https://github.com/virus231/channel-radar.git
+git clone https://github.com/virus231/channel-radar.git
 cd channel-radar
+cp .env.example .env
 ```
 
 Відкрийте цю папку як проєкт у Codex. Skills уже збережені в `.agents/skills`
 разом із допоміжними файлами та MIT-ліцензією; глобального встановлення не потрібно.
 Вони стають доступними в новому сеансі/наступному ході агента з контекстом проєкту.
 
-**Команд запуску застосунку й тестів поки немає:** код і manifests ще не створені.
-Задача [#2](https://github.com/virus231/channel-radar/issues/2) додасть Python 3.12/uv,
-React/TypeScript/Vite, lockfiles, Docker, CI та перевірені local commands.
-Для подальшої розробки значення з `.env.example` заповнюються лише в ignored `.env`
-або provider settings. Не вставляйте credentials у Git, Issues чи frontend.
+У `.env` задайте `DATABASE_URL` для окремої development БД, наприклад
+`postgresql://USER:PASSWORD@localhost:5432/channel_radar`. Решта ключів для цього
+етапу не потрібна. Production credentials зберігаються тільки в provider settings.
+Не вставляйте credentials у Git, Issues чи frontend.
+
+Backend, із кореня репозиторію:
+
+```sh
+cd backend
+uv sync --frozen
+uv run --env-file ../.env alembic upgrade head
+uv run --env-file ../.env uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Frontend, у другому терміналі з кореня:
+
+```sh
+cd frontend
+npm ci
+npm run dev
+```
+
+Відкрийте адресу, яку виведе Vite (за замовчуванням `http://127.0.0.1:5173`).
+Vite передає `/api` до backend. Для перевірки з одного сервісу зупиніть backend,
+виконайте `npm run build` у `frontend/` і запустіть backend знову. Зібраний UI
+буде доступний на `http://127.0.0.1:8000` разом із `/api/channels` і `/healthz`.
+Health не відкриває з’єднання з БД; невідомий API-маршрут повертає JSON 404.
+
+Перевірки з кореня, без `.env`, ключів і зовнішньої мережі:
+
+```sh
+cd backend
+uv run pytest
+cd ../frontend
+npm test
+npm run build
+```
+
+Pytest блокує TCP-з’єднання, використовує SQLite та in-process HTTP transport.
+Unix socket дозволений для внутрішньої роботи asyncio. PostgreSQL перевіряється
+окремо: `uv run --env-file ../.env alembic upgrade head`, `alembic current` і
+`alembic check` у `backend/` (останні дві команди з тим самим `uv run --env-file ../.env`).
+CI також збирає Docker і запускає його з чистою PostgreSQL 17, перевіряючи UI/API
+з одного origin. CI password — лише тестове значення для тимчасової БД runner.
+
+Docker, із кореня репозиторію, за наявності Docker Engine і доступної PostgreSQL:
+
+```sh
+docker build -t channel-radar .
+docker run --rm --env-file .env -p 8000:8000 channel-radar
+```
+
+У Docker `localhost` означає сам контейнер; задайте адресу БД, доступну контейнеру.
+Startup застосовує Alembic migration і запускає один Uvicorn worker.
+
+Перевірено 2026-10-08: 4 offline backend-тести, 4 frontend-тести, TypeScript/build,
+міграція на окремій PostgreSQL 17, запуск із чистого клону та Vite proxy.
+У браузері перевірено production UI на 1440 px і 390 px без горизонтального
+прокручування. [CI](https://github.com/virus231/channel-radar/actions/runs/37794797772)
+підтвердив також Docker build/start із PostgreSQL. Neon, Render і публічний URL
+ще не перевірені; задача #2 залишається відкритою.
 
 ## Модель даних
 
@@ -63,6 +121,12 @@ Cache fingerprint залежить від текстового входу, а н
 ## Безкоштовний деплой і його межі
 
 Один Render Free service віддаватиме API й зібраний React, Neon Free — Postgres.
+[Відкрити Render Blueprint](https://dashboard.render.com/blueprint/new?repo=https%3A%2F%2Fgithub.com%2Fvirus231%2Fchannel-radar)
+— конфігурація одного Docker-сервісу вже в `render.yaml`. Виберіть свій workspace,
+задайте `DATABASE_URL` із Neon (direct connection, SSL) у секретних settings і
+застосуйте Blueprint. Render прочитає `main`, застосує migration і запустить сервіс.
+Фактичний URL додамо після перевірки деплою; це посилання відкриває налаштування.
+
 cron-job.org перевірятиме health без БД кожні 10 хвилин і запускатиме захищений
 фоновий збір кожні 30 хвилин. На дату плану Render засинає після 15 хвилин без
 трафіку, холодний старт може тривати близько хвилини, а зовнішній cron очікує
@@ -85,4 +149,4 @@ UI-станів. PostgreSQL, scheduler, реальні провайдери й b
 Не плануються auth/roles, microservices, Celery/Redis, платний хостинг, повний
 архівний backfill, сотні каналів, порівняння каналів, алерти або `pulse` export.
 Це зберігає триденний термін для обов’язкових вимог. Перед здачею рев’юеру потрібно
-надати доступ до приватного репо; visibility самостійно не змінюється.
+надати посилання на публічне репо й перевірений live URL.
