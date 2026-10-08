@@ -1,0 +1,93 @@
+name: CI
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: astral-sh/setup-uv@v10.2.0
+        with:
+          version: '0.8.0'
+          python-version: '3.12'
+      - run: uv sync --frozen
+      - run: uv run --no-sync pytest
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+  container:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: radar_test
+          POSTGRES_PASSWORD: local_ci_only
+          POSTGRES_DB: channel_radar_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U radar_test -d channel_radar_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: docker build --tag channel-radar:test .
+      - name: Start app and apply migrations
+        run: >-
+          docker run --detach --name channel-radar --network host
+          --env DATABASE_URL=postgresql://radar_test:local_ci_only@127.0.0.1:5432/channel_radar_test
+          --env PORT=8000 channel-radar:test
+      - name: Verify UI and API on one origin
+        run: |
+          for attempt in $(seq 1 45); do
+            if curl --fail --silent http://127.0.0.1:8000/healthz > /tmp/health.json; then break; fi
+            sleep 1
+          done
+          python - <<'PY'
+          import json
+          import urllib.error
+          import urllib.request
+
+          base = 'http://127.0.0.1:8000'
+          def get(route):
+              return urllib.request.urlopen(base + route).read().decode()
+
+          assert json.loads(get('/healthz')) == {'status': 'ok'}
+          assert json.loads(get('/api/channels')) == []
+          assert '<div id="root">' in get('/')
+          assert get('/channels/example') == get('/')
+          try:
+              get('/api/missing')
+          except urllib.error.HTTPError as error:
+              assert error.code == 404
+              assert 'application/json' in error.headers['Content-Type']
+          else:
+              raise AssertionError('Missing API route must return 404')
+          PY
+      - name: Container logs
+        if: always()
+        run: docker logs channel-radar

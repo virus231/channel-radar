@@ -15,12 +15,12 @@ API та health check з того самого сервісу. Це перший
 - [ ] `/healthz` повертає 200 без БД й зовнішніх запитів; порожній `/api/channels` працює з Neon Postgres.
 - [ ] Offline health/API pytest і frontend TypeScript/build перевірки проходять; жоден тест не потребує ключів чи мережі.
 - [ ] Є початкова Alembic migration; її запуск проти порожнього PostgreSQL перевірений окремо від offline тестів.
-- [ ] Один Docker build містить React і backend; Render Free підключений до приватного репо й обслуговує обидві частини.
+- [ ] Один Docker build містить React і backend; Render Free підключений до публічного репо й обслуговує обидві частини.
 - [ ] Публічний URL реально відкритий браузером; API 404 не підміняється React HTML.
 - [ ] README містить фактичний URL і перевірені local commands; DB credentials збережені тільки у provider environment.
 
 ## Verification
 
 Offline health/API tests, TypeScript check, production frontend build; локальний
-контейнер із PostgreSQL; браузер і HTTP-запит до deployed URL. Хмарні акаунти й
+контейнер із PostgreSQL (локально або в CI); браузер і HTTP-запит до deployed URL. Хмарні акаунти й
 доступи потрібні саме на цьому етапі, а не під час підготовки репозиторію.

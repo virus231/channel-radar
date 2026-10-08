@@ -196,8 +196,8 @@ Render має спільні 750 free instance hours на workspace/місяць
 
 Neon Free на дату плану: 1 GB storage/project, 100 CU-hours/project/month і scale
 to zero. Не тримати БД активною health-запитами; не ставити мінімальний постійний
-compute. Перевірити поточний quota meter перед здачею. Доступ до приватного GitHub
-репо для Render та рев’юера налаштовується на етапі реального деплою/здачі.
+compute. Перевірити поточний quota meter перед здачею. GitHub repo публічний за
+рішенням користувача; Render може клонувати його без приватного доступу.
 
 Умови перевірені 2026-10-08: [Render](https://render.com/docs/free),
 [Neon](https://neon.com/blog/neon-free-plan-1-gb-per-project),
