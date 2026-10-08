@@ -21,10 +21,11 @@ cron jobs і LLM-інтеграція ще не реалізовані; тест
 
 ## Як відкрити локально
 
-Потрібен GitHub-доступ до приватного репозиторію й налаштований SSH або `gh`.
+Потрібні Git, `gh` і авторизований акаунт із доступом до приватного репозиторію.
+Команда використовує HTTPS і поточний акаунт `gh`, незалежно від SSH-ключів.
 
 ```sh
-gh repo clone virus231/channel-radar
+git -c credential.helper= -c 'credential.helper=!gh auth git-credential' clone https://github.com/virus231/channel-radar.git
 cd channel-radar
 ```
 

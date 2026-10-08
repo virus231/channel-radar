@@ -127,4 +127,13 @@ Gemini-дайджест. **Специфікація:** [spec.md](spec.md), GitHu
 - [x] Локально встановлено 11 skills із зафіксованою ревізією та ліцензією.
 - [x] Налаштовано GitHub tracker та single-context domain docs.
 - [x] Опубліковано специфікацію й шість задач із native relationships.
-- [ ] Початковий коміт відправлено в приватний GitHub repo й перевірено чистий клон.
+- [x] Початковий коміт відправлено в приватний GitHub repo й перевірено чистий клон.
+
+Перевірено 2026-10-08: PRIVATE visibility, default branch main, сім відкритих
+Issues, шість native sub-issues і п’ять blocked-by edges. Тексти Issues збігаються
+з локальними документами; усі 35 файлів skills/ліцензії збігаються з Git blobs
+зафіксованого upstream. Чистий GitHub-клон містить усі 56 tracked files; вихідний
+TEST-TASK.md збережено byte-for-byte. Перевірено локальні Markdown-посилання,
+порожні credential values у .env.example і типові патерни секретів. Команда
+HTTPS-клонування з README виконана успішно; авторизація Git налаштована лише
+локально для цього repo через gh. Runtime тести не запускалися: коду ще немає.
