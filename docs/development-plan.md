@@ -8,6 +8,9 @@ Gemini-дайджест. **Специфікація:** [spec.md](spec.md), GitHu
 означає завершення підготовки, а не виконання задач нижче. День 1–3 відлічується
 від початку розробки; це не календарний дедлайн, вигаданий із дати документа.
 
+2026-10-08: задача 01 виконана — https://channel-radar-uibp.onrender.com.
+Наступна задача — 02, додавання каналу; решта MVP ще не реалізована.
+
 ## Порядок роботи
 
 | День | Задача | GitHub | Блокер | Демонстраційний результат |
@@ -37,13 +40,13 @@ Gemini-дайджест. **Специфікація:** [spec.md](spec.md), GitHu
 
 ### 01. Перший деплой
 
-- [ ] Створити `backend/` із FastAPI, uv і Alembic та `frontend/` із Vite/React;
+- [x] Створити `backend/` із FastAPI, uv і Alembic та `frontend/` із Vite/React;
   зафіксувати Python 3.12 і lockfiles. Додати тільки базові channels/model/API.
-- [ ] Додати offline test для `/healthz` і порожнього списку каналів; перевірити
+- [x] Додати offline test для `/healthz` і порожнього списку каналів; перевірити
   red/green у відповідній задачі, а не вигадувати тести для документації.
-- [ ] Зібрати frontend, перевірити TypeScript, додати один Docker build і CI
+- [x] Зібрати frontend, перевірити TypeScript, додати один Docker build і CI
   для фактично наявних перевірок. Vite proxy працює локально, static SPA — у Docker.
-- [ ] Створити Neon/Render Free, перевірити migration на порожній БД, відкрити
+- [x] Створити Neon/Render Free, перевірити migration на порожній БД, відкрити
   deployed URL. Додати в README лише реально перевірені commands та URL.
 
 ### 02. Додавання каналу

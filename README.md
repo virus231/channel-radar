@@ -1,8 +1,9 @@
 # Channel Radar
 
-**Статус: перша задача розробки — базовий запуск. Публічного URL ще немає.**
+**Статус: перший деплой завершений; MVP ще розробляється.**
+**Застосунок:** https://channel-radar-uibp.onrender.com
 Працюють FastAPI, порожній React-огляд і читання каналів із PostgreSQL.
-Деплой на Render/Neon очікує налаштування доступів. Додавання каналів, збір,
+Застосунок працює на Render Free з Neon Free. Додавання каналів, збір,
 аналітика, cron jobs і LLM-інтеграція — наступні задачі; MVP ще не завершений.
 
 Живий дашборд аналітики публічних Telegram-каналів: додавання каналу з форми,
@@ -15,7 +16,7 @@
   GitHub [#1](https://github.com/virus231/channel-radar/issues/1).
 - [План на три дні](docs/development-plan.md) — порядок шести задач і матриця перевірок.
 - [GitHub Issues](https://github.com/virus231/channel-radar/issues) — специфікація
-  та шість відкритих задач із залежностями.
+  та шість задач із залежностями.
 - [CLAUDE.md](CLAUDE.md), [AGENTS.md](AGENTS.md) — межі модулів і правила для агентів.
 - [GLOSSARY.md](GLOSSARY.md), [ADR](docs/adr/) — терміни та три прийняті рішення.
 - [Skills і ревізія джерела](docs/agents/skills.md) — 11 локальних skills Matt Pocock.
@@ -94,8 +95,11 @@ Startup застосовує Alembic migration і запускає один Uvic
 міграція на окремій PostgreSQL 17, запуск із чистого клону та Vite proxy.
 У браузері перевірено production UI на 1440 px і 390 px без горизонтального
 прокручування. [CI](https://github.com/virus231/channel-radar/actions/runs/37794797772)
-підтвердив також Docker build/start із PostgreSQL. Neon, Render і публічний URL
-ще не перевірені; задача #2 залишається відкритою.
+підтвердив також Docker build/start із PostgreSQL.
+Живий Render Docker-сервіс перевірено з Neon PostgreSQL 17 у Frankfurt:
+`/healthz` → 200, `/api/channels` → 200 `[]`, невідомі API й assets → JSON 404,
+головна → HTML 200. Порожній UI працює на 1440 px і 390 px без горизонтального
+прокручування. Перший перевірений deploy: `5b6b4d68d4e91a35a02fc19f99fa64896b3bf47b`.
 
 ## Модель даних
 
@@ -120,12 +124,16 @@ Cache fingerprint залежить від текстового входу, а н
 
 ## Безкоштовний деплой і його межі
 
-Один Render Free service віддаватиме API й зібраний React, Neon Free — Postgres.
+Один Render Free service віддає API й зібраний React, Neon Free — Postgres.
+Neon project `channel-radar` (`nameless-fire-16167879`), branch `production`,
+база `channel_radar`: PostgreSQL 17, AWS Frankfurt. Render service
+`srv-db3ugfmb7d7c739mdcug`: Docker, Free, Frankfurt, Blueprint `channel-radar`.
+`DATABASE_URL` із direct SSL connection збережений тільки в Render environment.
 [Відкрити Render Blueprint](https://dashboard.render.com/blueprint/new?repo=https%3A%2F%2Fgithub.com%2Fvirus231%2Fchannel-radar)
 — конфігурація одного Docker-сервісу вже в `render.yaml`. Виберіть свій workspace,
 задайте `DATABASE_URL` із Neon (direct connection, SSL) у секретних settings і
 застосуйте Blueprint. Render прочитає `main`, застосує migration і запустить сервіс.
-Фактичний URL додамо після перевірки деплою; це посилання відкриває налаштування.
+Це посилання відкриває налаштування нового Blueprint; фактичний URL наведений вище.
 
 cron-job.org перевірятиме health без БД кожні 10 хвилин і запускатиме захищений
 фоновий збір кожні 30 хвилин. На дату плану Render засинає після 15 хвилин без

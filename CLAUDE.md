@@ -3,7 +3,7 @@
 ## Current stage
 
 The first implementation ticket adds the FastAPI/React foundation, channels read
-API, migration, Docker and CI. Live deployment is pending provider setup. Collection,
+API, migration, Docker and CI. Render Free with Neon Free is live and verified. Collection,
 analytics and digests belong to the remaining tickets; the MVP is not complete.
 
 Read `docs/spec.md` before implementation and `docs/development-plan.md` before
